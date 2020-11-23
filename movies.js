@@ -1,4 +1,4 @@
-const film = [
+const movies = [
     {
         id: 1,
         image: "https://m.media-amazon.com/images/M/MV5BYWZjMjk3ZTItODQ2ZC00NTY5LWE0ZDYtZTI3MjcwN2Q5NTVkXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_UX182_CR0,0,182,268_AL_.jpg",
@@ -71,3 +71,26 @@ const film = [
 ]
 
 let gallery = document.querySelector('.gallery')
+let card = document.querySelector('.card')
+card.addEventListener('click', openAboutMovie)
+
+function displayMoviesCard() {
+
+    movies.map(item => {
+        gallery.innerHTML += `
+         <div class="card" id ='${item.id}'>
+            <img src="${item.image}"
+                 alt="">
+                 <h2>Title: ${item.title}</h2>
+            <h3>Year: ${item.year}</h3>
+            <h4>Rating: ${item.rating}</h4>
+        </div>
+        `
+    })
+}
+
+displayMoviesCard()
+
+function openAboutMovie(event) {
+    console.log(event)
+}
