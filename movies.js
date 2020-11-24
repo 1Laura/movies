@@ -178,7 +178,7 @@ function openAboutMovie(event) {
             singleMovie.appendChild(e)
         }
     )
-    let currentMovie = movies.findIndex(el => el.id === id)
+    // let currentMovie = movies.findIndex(el => el.id === id)
 }
 
 function displayMyComment(event) {
