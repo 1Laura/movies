@@ -1,6 +1,6 @@
-const movies = [
+let movies = [
     {
-        id: 1,
+        id: '1',
         image: "https://m.media-amazon.com/images/M/MV5BYWZjMjk3ZTItODQ2ZC00NTY5LWE0ZDYtZTI3MjcwN2Q5NTVkXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_UX182_CR0,0,182,268_AL_.jpg",
         title: "Parasite",
         year: "2019",
@@ -9,7 +9,7 @@ const movies = [
         comments: []
     },
     {
-        id: 2,
+        id: '2',
         image: "https://m.media-amazon.com/images/M/MV5BM2EwMmRhMmUtMzBmMS00ZDQ3LTg4OGEtNjlkODk3ZTMxMmJlXkEyXkFqcGdeQXVyMjM5ODk1NDU@._V1_UX182_CR0,0,182,268_AL_.jpg",
         title: "The Queen's Gambit ",
         year: "2020",
@@ -21,7 +21,7 @@ const movies = [
         }]
     },
     {
-        id: 3,
+        id: '3',
         image: "https://m.media-amazon.com/images/M/MV5BNGVjNWI4ZGUtNzE0MS00YTJmLWE0ZDctN2ZiYTk2YmI3NTYyXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_UX182_CR0,0,182,268_AL_.jpg",
         title: "Joker ",
         year: "2019",
@@ -39,7 +39,7 @@ const movies = [
         ]
     },
     {
-        id: 4,
+        id: '4',
         image: "https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_UY268_CR3,0,182,268_AL_.jpg",
         title: "The Godfather",
         year: "1972",
@@ -48,7 +48,7 @@ const movies = [
         comments: []
     },
     {
-        id: 5,
+        id: '5',
         image: "https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_UY268_CR1,0,182,268_AL_.jpg",
         title: "Pulp Fiction",
         year: "1994",
@@ -57,7 +57,7 @@ const movies = [
         comments: []
     },
     {
-        id: 6,
+        id: '6',
         image: "https://m.media-amazon.com/images/M/MV5BZWFlYmY2MGEtZjVkYS00YzU4LTg0YjQtYzY1ZGE3NTA5NGQxXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_UX182_CR0,0,182,268_AL_.jpg",
         title: "The Shining",
         year: "1980",
@@ -70,27 +70,121 @@ const movies = [
     },
 ]
 
-let gallery = document.querySelector('.gallery')
-let card = document.querySelector('.card')
-card.addEventListener('click', openAboutMovie)
+const helpers = {
+    showSingleMovie() {
+        gallery.style.display = 'none'
+        aboutMovie.style.display = 'block'
+
+    },
+    showGalleryMovies() {
+        gallery.style.display = 'flex'
+        aboutMovie.style.display = 'none'
+    },
+    // appendSingleMovie() {
+    //     // singleMovie.innerHTML = ''
+    //     image.src = currentMovie.image
+    //     currentMovie.title
+    //     currentMovie.year
+    //
+    // }
+
+}
+
+const gallery = document.getElementById('gallery')
+const aboutMovie = document.getElementById('aboutMovie')
+const btnBack = document.getElementById('btnBack')
+const singleMovie = document.getElementById('singleMovie')
+
+
+btnBack.addEventListener('click', helpers.showGalleryMovies)
+
+let image
+let title
+let year
+let rating
+let description
+let comments
+let currentMovie
 
 function displayMoviesCard() {
 
-    movies.map(item => {
-        gallery.innerHTML += `
-         <div class="card" id ='${item.id}'>
-            <img src="${item.image}"
-                 alt="">
-                 <h2>Title: ${item.title}</h2>
-            <h3>Year: ${item.year}</h3>
-            <h4>Rating: ${item.rating}</h4>
-        </div>
-        `
+    movies.map(m => {
+        card = document.createElement('div')
+        card.classList.add('card')
+        card.setAttribute('id', m.id)
+        //atidaro single movie
+        card.addEventListener('click', openAboutMovie)
+
+        image = document.createElement('img')
+        image.src = m.image
+
+        title = document.createElement('h2')
+        title.innerText = m.title
+
+        year = document.createElement('h3')
+        year.innerText = m.year
+
+        rating = document.createElement('h4')
+        rating.innerText = m.rating
+
+        let createCard = [image, title, year, rating]
+        createCard.map(item => {
+            card.appendChild(item)
+        })
+        gallery.appendChild(card)
+
+
     })
 }
 
 displayMoviesCard()
 
+
 function openAboutMovie(event) {
-    console.log(event)
+    singleMovie.innerHTML = ''
+
+    let id
+    !!event.target.id ? id = event.target.id : id = event.path[1].id
+    let filter = movies.filter(item => item.id === id)[0]
+    //destrukturizavimas. Prideda prie objekto parametrus, sujungia objektus.pvz
+    // let obj ={
+    //     name:'as',
+    //     age: '99'
+    // }
+    // currentMovie = {...filter, ...obj}
+    currentMovie = {...filter}
+
+    helpers.showSingleMovie()
+
+    image = document.createElement('img')
+    image.src = currentMovie.image
+
+    title = document.createElement('h2')
+    title.innerText = currentMovie.title
+
+    year = document.createElement('h3')
+    year.innerText = currentMovie.year
+
+    rating = document.createElement('h4')
+    rating.innerText = currentMovie.rating
+
+    description = document.createElement('p')
+    description.innerText = currentMovie.description
+
+    comments = document.createElement('div')
+    comments.innerText = currentMovie.comment
+
+    myComment = document.createElement('input')
+    myComment.value = currentMovie.comments
+
+    let createMovie = [image, title, year, rating, description, comments, myComment]
+    createMovie.map(e => {
+            singleMovie.appendChild(e)
+        }
+    )
+
+
+    // let currentMovie = movies.findIndex(el => el.id === id)
+
 }
+
