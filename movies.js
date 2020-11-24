@@ -79,22 +79,14 @@ const helpers = {
     showGalleryMovies() {
         gallery.style.display = 'flex'
         aboutMovie.style.display = 'none'
-    },
-    // appendSingleMovie() {
-    //     // singleMovie.innerHTML = ''
-    //     image.src = currentMovie.image
-    //     currentMovie.title
-    //     currentMovie.year
-    //
-    // }
-
+    }
 }
 
 const gallery = document.getElementById('gallery')
 const aboutMovie = document.getElementById('aboutMovie')
 const btnBack = document.getElementById('btnBack')
 const singleMovie = document.getElementById('singleMovie')
-
+const commentsBlock = document.querySelector('.commentsBlock')
 
 btnBack.addEventListener('click', helpers.showGalleryMovies)
 
@@ -103,8 +95,10 @@ let title
 let year
 let rating
 let description
-let comments
+let myComm
 let currentMovie
+let btnSubmit
+let arrComm = []
 
 function displayMoviesCard() {
 
@@ -132,8 +126,6 @@ function displayMoviesCard() {
             card.appendChild(item)
         })
         gallery.appendChild(card)
-
-
     })
 }
 
@@ -171,20 +163,48 @@ function openAboutMovie(event) {
     description = document.createElement('p')
     description.innerText = currentMovie.description
 
-    comments = document.createElement('div')
-    comments.innerText = currentMovie.comment
+    // comments = document.createElement('div')
+    // comments.innerText = currentMovie.comments[0]
 
     myComment = document.createElement('input')
-    myComment.value = currentMovie.comments
+    btnSubmit = document.createElement('button')
+    btnSubmit.innerText = "Submit"
 
-    let createMovie = [image, title, year, rating, description, comments, myComment]
+    // myComment.addEventListener('input', displayMyComment)
+    btnSubmit.addEventListener('click', submitMyComment)
+
+    let createMovie = [image, title, year, rating, description, myComment, btnSubmit]
     createMovie.map(e => {
             singleMovie.appendChild(e)
         }
     )
-
-
-    // let currentMovie = movies.findIndex(el => el.id === id)
-
+    let currentMovie = movies.findIndex(el => el.id === id)
 }
 
+function displayMyComment(event) {
+    movies[currentMovie].comments.map(item => {
+        let name = document.createElement('h4')
+        name.innerText = item.name
+
+        let comment = document.createElement('div')
+        comment.classList.add('comment')
+
+        comment.innerText = item.comment
+        commentsBlock.appendChild(name)
+        commentsBlock.appendChild(comment)
+    })
+}
+
+function submitMyComment(s) {
+    myComm = s.path[1].childNodes[6].value
+
+    console.log(myComm)
+    let mComm = {
+        name: "Laura",
+        comment: myComm
+    }
+    movies[currentMovie].comments.push(mComm)
+    console.log(movies[currentMovie].comments)
+    displayMyComment()
+
+}
